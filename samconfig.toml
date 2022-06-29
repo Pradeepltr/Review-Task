@@ -1,0 +1,12 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "review-project"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-al8l2w0e0ou5"
+s3_prefix = "review-project"
+region = "us-east-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+disable_rollback = true
+image_repositories = []

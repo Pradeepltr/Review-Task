@@ -1,0 +1,128 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  review-task
+
+  Sample SAM Template for review-task
+  
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 3
+
+Resources:
+  InputUser:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: src/function/
+      Handler: input.Store
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      Events:
+        InputUser:
+          Type: Api 
+          Properties:
+            Path: /user
+            Method: post
+      Policies:
+          DynamoDBCrudPolicy:
+             TableName: !Ref UserTable
+  allUser:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: src/function/
+      Handler: allUser.Users
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      Events:
+        allUser:
+          Type: Api 
+          Properties:
+            Path: /Allusers
+            Method: get
+      Policies:
+          DynamoDBCrudPolicy:
+             TableName: !Ref UserTable
+
+  allUserSameDepartment:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: src/function/
+      Handler: sameDept.samedepartmetData
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      Events:
+        SameDept:
+          Type: Api 
+          Properties:
+            Path: /users
+            Method: get
+            RequestParameters:
+               - method.request.querystring.department:
+                    Required: true
+      Policies:
+          DynamoDBCrudPolicy:
+             TableName: !Ref UserTable
+
+  allUserSameCity:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: src/function/
+      Handler: sameCity.sameCityData
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      Events:
+        SameCity:
+          Type: Api 
+          Properties:
+            Path: /usersMysuru
+            Method: get
+            RequestParameters:
+               - method.request.querystring.city:
+                    Required: true
+      Policies:
+          DynamoDBCrudPolicy:
+             TableName: !Ref UserTable
+  singleUserData:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: src/function/
+      Handler: singleUser.singleUserData
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      Events:
+        SingleUser:
+          Type: Api 
+          Properties:
+            Path: /user/{userId}
+            Method: get
+            
+      Policies:
+          DynamoDBCrudPolicy:
+             TableName: !Ref UserTable
+
+  UserTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: userdata
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+       - AttributeName: id
+         KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 2
+        WriteCapacityUnits: 2
+
+Outputs:
+ 
+  Employedata:
+    Description: "API Gateway endpoint URL for Prod stage for handle employe data"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod"
+ 
