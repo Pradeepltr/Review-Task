@@ -41,12 +41,12 @@ exports.Store = async (event, context) => {
     }
     
    const params={
-    TableName:"userdata",
+    TableName:"userdata123",
     Item:{
         id:data.id,
         Name:data.name,
-        department:data.department,
-        city:data.city
+        department:data.department.toLowerCase(),
+        city:data.city.toLowerCase()
 
     }
    }

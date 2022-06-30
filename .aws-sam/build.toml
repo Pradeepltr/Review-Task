@@ -8,6 +8,6 @@ architecture = "x86_64"
 handler = "input.Store"
 manifest_hash = ""
 packagetype = "Zip"
-functions = ["InputUser", "allUser", "allUserSameDepartment", "allUserSameCity", "singleUserData"]
+functions = ["InputUser", "singleUserData", "FetchData"]
 
 [layer_build_definitions]

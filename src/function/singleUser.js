@@ -6,7 +6,7 @@ exports.singleUserData = async (event, context) => {
     
     var check=0;
    const params={
-    TableName:"userdata",
+    TableName:"userdata123",
     ExpressionAttributeValues:{
       ':v1':id
     },
